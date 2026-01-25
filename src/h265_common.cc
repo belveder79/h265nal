@@ -706,7 +706,7 @@ std::shared_ptr<NaluChecksum> NaluChecksum::GetNaluChecksum(
   // add carry
   sum += (sum >> 32);
   // truncate to 32 bits and get one's complement
-  uint32_t answer = ~sum;
+  uint32_t answer = static_cast<uint32_t>(~sum);
 
   // write sum into (generic) checksum buffer (network order)
   *(reinterpret_cast<uint32_t *>(checksum->checksum)) = htonl(answer);
