@@ -109,17 +109,17 @@ bool WriteSps(h265nal::H265SpsParser::SpsState* sps, h265nal::BitBufferWriter* b
                          : sps->sps_max_sub_layers_minus1);
        i <= sps->sps_max_sub_layers_minus1; i++) {
     // sps_max_dec_pic_buffering_minus1[i]  ue(v)
-    if (!bit_buffer->WriteExponentialGolomb(sps->sps_max_dec_pic_buffering_minus1[i])) {
+    if (!bit_buffer->WriteExponentialGolomb(sps->sps_max_dec_pic_buffering_minus1[sps->sps_sub_layer_ordering_info_present_flag ? i : i-1])) {
       return false;
     }
 
     // sps_max_num_reorder_pics[i]  ue(v)
-    if (!bit_buffer->WriteExponentialGolomb(sps->sps_max_num_reorder_pics[i])) {
+    if (!bit_buffer->WriteExponentialGolomb(sps->sps_max_num_reorder_pics[sps->sps_sub_layer_ordering_info_present_flag ? i : i-1])) {
       return false;
     }
 
     // sps_max_latency_increase_plus1[i]  ue(v)
-    if (!bit_buffer->WriteExponentialGolomb(sps->sps_max_latency_increase_plus1[i])) {
+    if (!bit_buffer->WriteExponentialGolomb(sps->sps_max_latency_increase_plus1[sps->sps_sub_layer_ordering_info_present_flag ? i : i-1])) {
       return false;
     }
   }

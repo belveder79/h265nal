@@ -500,15 +500,15 @@ bool WriteVps(h265nal::H265VpsParser::VpsState* vps, h265nal::BitBufferWriter* b
                        : vps->vps_max_sub_layers_minus1);
          i <= vps->vps_max_sub_layers_minus1; i++) {
         // vps_max_dec_pic_buffering_minus1[i]  ue(v)
-        if (!bit_buffer->WriteExponentialGolomb(vps->vps_max_dec_pic_buffering_minus1[i-1])) {
+        if (!bit_buffer->WriteExponentialGolomb(vps->vps_max_dec_pic_buffering_minus1[vps->vps_sub_layer_ordering_info_present_flag ? i : i-1])) {
             return false;
         }
         // vps_max_num_reorder_pics[i]  ue(v)
-        if (!bit_buffer->WriteExponentialGolomb(vps->vps_max_num_reorder_pics[i-1])) {
+        if (!bit_buffer->WriteExponentialGolomb(vps->vps_max_num_reorder_pics[vps->vps_sub_layer_ordering_info_present_flag ? i : i-1])) {
             return false;
         }
         // vps_max_latency_increase_plus1[i]  ue(v)
-        if (!bit_buffer->WriteExponentialGolomb(vps->vps_max_latency_increase_plus1[i-1])) {
+        if (!bit_buffer->WriteExponentialGolomb(vps->vps_max_latency_increase_plus1[vps->vps_sub_layer_ordering_info_present_flag ? i : i-1])) {
             return false;
         }
     }
@@ -524,7 +524,7 @@ bool WriteVps(h265nal::H265VpsParser::VpsState* vps, h265nal::BitBufferWriter* b
     }
     
     for (uint32_t i = 1; i <= vps->vps_num_layer_sets_minus1; i++) {
-        vps->layer_id_included_flag.emplace_back();
+        //vps->layer_id_included_flag.emplace_back();
         for (uint32_t j = 0; j <= vps->vps_max_layer_id; j++) {
 #if REVERSE_THIS
             // layer_id_included_flag[i][j]  u(1)

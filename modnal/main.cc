@@ -128,7 +128,7 @@ int main(int argc, char* argv[])
         else
             std::cout << "ERROR!" << std::endl;
         delete[] buf;
-        return -1;
+        //return -1;
         /*
          // to be extended looking for other types also
          uint32_t naltype = nal_unit->nal_unit_header->nal_unit_type;
