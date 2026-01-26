@@ -1,7 +1,7 @@
 #include "h265_slice_writer.h"
 
-bool WriteSliceSegmentLayer(h265nal::H265SliceSegmentLayerParser::SliceSegmentLayerState* slice_segment_layer,
-                            h265nal::BitBufferWriter* bit_buffer) noexcept {
+bool WriteSliceSegmentLayer(H265SliceSegmentLayerParser::SliceSegmentLayerState* slice_segment_layer,
+                            BitBufferWriter* bit_buffer) noexcept {
   // H265 slice segment layer (slice_segment_layer_rbsp()) NAL Unit.
   // Section 7.3.2.9 ("Slice segment layer RBSP syntax") of the H.265
   // standard for a complete description.

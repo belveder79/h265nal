@@ -1,0 +1,9 @@
+#ifndef H265_VUI_MULTILAYER_EXTENSION_WRITER_INCLUDED
+#define H265_VUI_MULTILAYER_EXTENSION_WRITER_INCLUDED
+
+#include <h265_bitstream_parser.h>
+#include <h265_common.h>
+#include "h265_wutils.h"
+
+
+#endif // H265_VUI_MULTILAYER_EXTENSION_WRITER_INCLUDED

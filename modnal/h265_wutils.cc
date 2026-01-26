@@ -33,7 +33,7 @@ int WriteFile(const char* filename, uint8_t* buffer, size_t sz) {
     return 0;
 }
 
-bool wbsp_trailing_bits(h265nal::BitBufferWriter *bit_buffer) {
+bool wbsp_trailing_bits(BitBufferWriter *bit_buffer) {
   uint32_t bits_tmp = 1;
 
   if (!bit_buffer->WriteBits(bits_tmp, 1)) {
@@ -58,7 +58,7 @@ bool wbsp_trailing_bits(h265nal::BitBufferWriter *bit_buffer) {
  to safely locate valid NAL boundaries.
  CHECK THIS AGAIN!!!!
  */
-std::vector<uint8_t> EscapeRbsp(uint8_t* data, h265nal::BitBufferWriter* writer) {
+std::vector<uint8_t> EscapeRbsp(uint8_t* data, BitBufferWriter* writer) {
   std::vector<uint8_t> out;
     size_t out_byte_offset, out_bit_offset;
     writer->GetCurrentOffset(&out_byte_offset, &out_bit_offset);

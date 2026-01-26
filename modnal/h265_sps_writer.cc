@@ -1,7 +1,10 @@
 
 #include "h265_sps_writer.h"
+#include "h265_profile_tier_level_writer.h"
+#include "h265_scaling_list_data_writer.h"
+#include "h265_st_ref_pic_set_writer.h"
 
-bool WriteSps(h265nal::H265SpsParser::SpsState* sps, h265nal::BitBufferWriter* bit_buffer) noexcept
+bool WriteSps(H265SpsParser::SpsState* sps, BitBufferWriter* bit_buffer) noexcept
 {
   // sps_video_parameter_set_id  u(4)
   if (!bit_buffer->WriteBits(sps->sps_video_parameter_set_id, 4)) {
@@ -18,16 +21,8 @@ bool WriteSps(h265nal::H265SpsParser::SpsState* sps, h265nal::BitBufferWriter* b
     return false;
   }
 
-#ifdef CHECK
-  // profile_tier_level(1, sps_max_sub_layers_minus1)
-  sps->profile_tier_level = H265ProfileTierLevelParser::ParseProfileTierLevel(
-      bit_buffer, true, sps->sps_max_sub_layers_minus1);
-  if (sps->profile_tier_level == nullptr) {
-    return false;
-  }
-#else
-    std::cout << "UNIMPLEMENTED!" << std::endl;
-#endif
+  if (!WriteProfileTierLevel(sps->profile_tier_level.get(), bit_buffer))
+      return false;
 
   // sps_seq_parameter_set_id  ue(v)
   if (!bit_buffer->WriteExponentialGolomb(sps->sps_seq_parameter_set_id)) {
@@ -170,18 +165,12 @@ bool WriteSps(h265nal::H265SpsParser::SpsState* sps, h265nal::BitBufferWriter* b
     if (!bit_buffer->WriteBits(sps->sps_scaling_list_data_present_flag, 1)) {
       return false;
     }
-#ifdef CHECK
-    if (sps->sps_scaling_list_data_present_flag) {
-      // scaling_list_data()
-      sps->scaling_list_data =
-          H265ScalingListDataParser::ParseScalingListData(bit_buffer);
-      if (sps->scaling_list_data == nullptr) {
-        return false;
+      if (sps->sps_scaling_list_data_present_flag) {
+        // scaling_list_data()
+          if (!WriteScalingListData(sps->scaling_list_data.get(), bit_buffer)) {
+          return false;
+        }
       }
-    }
-#else
-      std::cout << "UNIMPLEMENTED!" << std::endl;
-#endif
   }
 
   // amp_enabled_flag  u(1)

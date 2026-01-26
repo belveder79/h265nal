@@ -5,6 +5,6 @@
 #include <h265_common.h>
 #include "h265_wutils.h"
 
-bool WriteSps(h265nal::H265SpsParser::SpsState* vps, h265nal::BitBufferWriter* bit_buffer) noexcept;
+bool WriteSps(H265SpsParser::SpsState* vps, BitBufferWriter* bit_buffer) noexcept;
 
 #endif // H265_SPS_WRITER_INCLUDED

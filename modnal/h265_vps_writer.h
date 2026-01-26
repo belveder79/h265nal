@@ -5,6 +5,6 @@
 #include <h265_common.h>
 #include "h265_wutils.h"
 
-bool WriteVps(h265nal::H265VpsParser::VpsState* vps, h265nal::BitBufferWriter* bit_buffer) noexcept;
+bool WriteVps(H265VpsParser::VpsState* vps, BitBufferWriter* bit_buffer) noexcept;
 
 #endif // H265_VPS_WRITER_INCLUDED

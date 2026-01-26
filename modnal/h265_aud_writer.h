@@ -5,6 +5,6 @@
 #include <h265_common.h>
 #include "h265_wutils.h"
 
-bool WriteAud(h265nal::H265AudParser::AudState* aud, h265nal::BitBufferWriter* bit_buffer) noexcept;
+bool WriteAud(H265AudParser::AudState* aud, BitBufferWriter* bit_buffer) noexcept;
 
 #endif // H265_AUD_WRITER_INCLUDED

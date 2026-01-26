@@ -5,6 +5,6 @@
 #include <h265_common.h>
 #include "h265_wutils.h"
 
-bool WriteSei(h265nal::H265SeiMessageParser::SeiMessageState* sei_message_state, h265nal::BitBufferWriter* bit_buffer) noexcept;
+bool WriteSei(H265SeiMessageParser::SeiMessageState* sei_message_state, BitBufferWriter* bit_buffer) noexcept;
 
 #endif // H265_SEI_WRITER_INCLUDED

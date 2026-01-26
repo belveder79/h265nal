@@ -1,6 +1,6 @@
 #include "h265_pps_writer.h"
 
-bool WritePps(h265nal::H265PpsParser::PpsState* pps, h265nal::BitBufferWriter* bit_buffer) noexcept {
+bool WritePps(H265PpsParser::PpsState* pps, BitBufferWriter* bit_buffer) noexcept {
     
   //uint32_t golomb_tmp;
 

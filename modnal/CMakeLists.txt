@@ -7,7 +7,16 @@ set (modnal_SOURCES
   h265_sei_writer.cc
   h265_slice_writer.cc
   h265_nal_unit_writer.cc
+  h265_profile_tier_level_writer.cc
   h265_wutils.cc
+  h265_hdr_parameters_writer.cc
+  h265_sub_layer_hdr_parameters_writer.cc
+  h265_scaling_list_data_writer.cc
+  h265_pps_multilayer_extension_writer.cc
+  h265_sps_multilayer_extension_writer.cc
+  h265_vui_parameters_writer.cc
+  h265_st_ref_pic_set_writer.cc
+  h265_pps_scc_extension_writer.cc
 )
 
 add_executable(modnal main.cc ${modnal_SOURCES})
@@ -22,8 +31,17 @@ target_sources(modnal
         "h265_pps_writer.h"
         "h265_sei_writer.h"
         "h265_slice_writer.h"
+        "h265_profile_tier_level_writer.h"
         "h265_nal_unit_writer.h"
+        "h265_pps_multilayer_extension_writer.h"
+        "h265_sub_layer_hdr_parameters_writer.h"
+        "h265_hdr_parameters_writer.h"
+        "h265_scaling_list_data_writer.h"
+        "h265_sps_multilayer_extension_writer.h"
+        "h265_vui_parameters_writer.h"
         "h265_wutils.h"
+        "h265_st_ref_pic_set_writer.h"
+        "h265_pps_scc_extension_writer.h"
 )
 
 get_target_property(HeaderList modnal HEADER_SET)
