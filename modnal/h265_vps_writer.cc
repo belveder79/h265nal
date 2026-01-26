@@ -85,18 +85,10 @@ bool WriteVps(H265VpsParser::VpsState* vps, BitBufferWriter* bit_buffer) noexcep
     for (uint32_t i = 1; i <= vps->vps_num_layer_sets_minus1; i++) {
         //vps->layer_id_included_flag.emplace_back();
         for (uint32_t j = 0; j <= vps->vps_max_layer_id; j++) {
-#ifdef CHECK
-            // layer_id_included_flag[i][j]  u(1)
-            if (!bit_buffer->ReadBits(1, bits_tmp)) {
-                return false;
-            }
-            vps->layer_id_included_flag[i - 1].push_back(bits_tmp);
-#else
             // layer_id_included_flag[i][j]  u(1)
             if (!bit_buffer->WriteBits(vps->layer_id_included_flag[i - 1][j], 1)) {
                 return false;
             }
-#endif
         }
     }
     

@@ -5,7 +5,7 @@ bool WriteSliceSegmentHeader(H265SliceSegmentHeaderParser::SliceSegmentHeaderSta
 {
     #pragma unused(slice_segment_header)
     #pragma unused(bit_buffer)
-    std::cout << "UNIMPLEMENTED!" << std::endl;
+    std::cout << "SliceSegmentHEader UNIMPLEMENTED!" << std::endl;
 
   //uint32_t bits_tmp;
   //uint32_t golomb_tmp;
