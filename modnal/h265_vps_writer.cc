@@ -1,7 +1,7 @@
 #include "h265_vps_writer.h"
 #include "h265_profile_tier_level_writer.h"
-#include "h265_hdr_parameters_writer.h"
-#include "h265_sub_layer_hdr_parameters_writer.h"
+#include "h265_hrd_parameters_writer.h"
+#include "h265_sub_layer_hrd_parameters_writer.h"
 
 bool WriteVps(H265VpsParser::VpsState* vps, BitBufferWriter* bit_buffer) noexcept
 {

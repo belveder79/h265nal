@@ -119,7 +119,7 @@ int main(int argc, char* argv[])
         // TODO: need to implement a writer here...
         uint8_t* buf = new uint8_t[nal_unit->parsed_length]; memset(buf, 0x00, nal_unit->parsed_length);
         h265nal::BitBufferWriter wbit_buffer(buf, nal_unit->parsed_length);
-        if(WriteNalUnit(nal_unit.get(), &wbit_buffer))
+        if(WriteNalUnit(nal_unit.get(), std::prev(bitstream_parser_state.sps.end())->second.get(), &wbit_buffer))
         {
             WriteFile("/Users/arth/Development/TILE/kvazaar/buildosx/vps.nal", buf, nal_unit->parsed_length);
             std::vector<uint8_t> unpacked_buffer = EscapeRbsp(buf, &wbit_buffer);

@@ -1,4 +1,4 @@
-#include "h265_sub_layer_hdr_parameters_writer.h"
+#include "h265_sub_layer_hrd_parameters_writer.h"
 
 bool WriteSubLayerHrdParameters( H265SubLayerHrdParametersParser::SubLayerHrdParametersState* sub_layer_hrd_parameters,
                                 BitBufferWriter* bit_buffer, uint32_t CpbCnt,

@@ -1,5 +1,5 @@
-#include "h265_hdr_parameters_writer.h"
-#include "h265_sub_layer_hdr_parameters_writer.h"
+#include "h265_hrd_parameters_writer.h"
+#include "h265_sub_layer_hrd_parameters_writer.h"
 
 bool WriteHrdParameters(H265HrdParametersParser::HrdParametersState* hrd_parameters,
                         BitBufferWriter* bit_buffer,

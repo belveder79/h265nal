@@ -3,6 +3,11 @@
 #include "h265_profile_tier_level_writer.h"
 #include "h265_scaling_list_data_writer.h"
 #include "h265_st_ref_pic_set_writer.h"
+#include "h265_sps_range_extension_writer.h"
+#include "h265_vui_parameters_writer.h"
+#include "h265_sps_multilayer_extension_writer.h"
+#include "h265_sps_3d_extension_writer.h"
+#include "h265_sps_scc_extension_writer.h"
 
 bool WriteSps(H265SpsParser::SpsState* sps, BitBufferWriter* bit_buffer) noexcept
 {
@@ -238,7 +243,10 @@ bool WriteSps(H265SpsParser::SpsState* sps, BitBufferWriter* bit_buffer) noexcep
     sps->st_ref_pic_set.push_back(std::move(st_ref_pic_set_item));
   }
 #else
-    std::cout << "UNIMPLEMENTED!" << std::endl;
+    for (uint32_t i = 0; i < sps->num_short_term_ref_pic_sets; i++) {
+        if(!WriteStRefPicSet(sps->st_ref_pic_set[i].get(), bit_buffer))
+            return false;
+    }
 #endif
 
   // long_term_ref_pics_present_flag  u(1)
@@ -280,18 +288,9 @@ bool WriteSps(H265SpsParser::SpsState* sps, BitBufferWriter* bit_buffer) noexcep
   if (!bit_buffer->WriteBits(sps->vui_parameters_present_flag, 1)) {
     return false;
   }
-#ifdef CHECK
-  if (sps->vui_parameters_present_flag) {
-    // vui_parameters()
-    sps->vui_parameters = H265VuiParametersParser::ParseVuiParameters(
-        bit_buffer, sps->sps_max_sub_layers_minus1);
-    if (sps->vui_parameters == nullptr) {
-      return false;
-    }
-  }
-#else
-    std::cout << "UNIMPLEMENTED!" << std::endl;
-#endif
+    
+    if(!WriteVuiParameters(sps->vui_parameters.get(), bit_buffer))
+        return false;
 
   // sps_extension_present_flag  u(1)
   if (!bit_buffer->WriteBits(sps->sps_extension_present_flag, 1)) {
@@ -324,47 +323,36 @@ bool WriteSps(H265SpsParser::SpsState* sps, BitBufferWriter* bit_buffer) noexcep
       return false;
     }
   }
-#ifdef CHECK
-  if (sps->sps_range_extension_flag) {
-    // sps_range_extension()
-    sps->sps_range_extension =
-        H265SpsRangeExtensionParser::ParseSpsRangeExtension(bit_buffer);
-    if (sps->sps_range_extension == nullptr) {
-      return false;
+    if (sps->sps_range_extension_flag) {
+      // sps_range_extension()
+        if(!WriteSpsRangeExtension(sps->sps_range_extension.get(), bit_buffer)) {
+        return false;
+      }
     }
-  }
-    
-  if (sps->sps_multilayer_extension_flag) {
-    // sps_multilayer_extension() // specified in Annex F
-    sps->sps_multilayer_extension =
-        H265SpsMultilayerExtensionParser::ParseSpsMultilayerExtension(
-            bit_buffer);
-    if (sps->sps_multilayer_extension == nullptr) {
-      return false;
-    }
-  }
 
-  if (sps->sps_3d_extension_flag) {
-    // sps_3d_extension() // specified in Annex I
-    sps->sps_3d_extension =
-        H265Sps3dExtensionParser::ParseSps3dExtension(bit_buffer);
-    if (sps->sps_3d_extension == nullptr) {
-      return false;
+    if (sps->sps_multilayer_extension_flag) {
+      // sps_multilayer_extension() // specified in Annex F
+      if (!WriteSpsMultilayerExtension(sps->sps_multilayer_extension.get(), bit_buffer)) {
+        return false;
+      }
     }
-  }
 
-  if (sps->sps_scc_extension_flag) {
-    // sps_scc_extension()
-    sps->sps_scc_extension = H265SpsSccExtensionParser::ParseSpsSccExtension(
-        bit_buffer, sps->chroma_format_idc, sps->bit_depth_luma_minus8,
-        sps->bit_depth_chroma_minus8);
-    if (sps->sps_scc_extension == nullptr) {
-      return false;
+    if (sps->sps_3d_extension_flag) {
+      // sps_3d_extension() // specified in Annex I
+      if (!WriteSps3dExtension(sps->sps_3d_extension.get(), bit_buffer)) {
+        return false;
+      }
     }
-  }
-#else
-    std::cout << "UNIMPLEMENTED!" << std::endl;
-#endif
+
+    if (sps->sps_scc_extension_flag) {
+      // sps_scc_extension()
+       if(!WriteSpsSccExtension(sps->sps_scc_extension.get(),
+                                sps->chroma_format_idc, sps->bit_depth_luma_minus8,
+                                sps->bit_depth_chroma_minus8, bit_buffer))
+       {
+        return false;
+      }
+    }
 
   if (sps->sps_extension_4bits) {
     while (more_rbsp_data(bit_buffer)) {

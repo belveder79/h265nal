@@ -1,10 +1,10 @@
 #include "h265_nal_unit_writer.h"
 
-bool WriteNalUnit(H265NalUnitParser::NalUnitState* nal_unit, BitBufferWriter* wbit_buffer) noexcept
+bool WriteNalUnit(H265NalUnitParser::NalUnitState* nal_unit, H265SpsParser::SpsState* sps, BitBufferWriter* wbit_buffer) noexcept
 {
     if(!WriteNalUnitHeader(nal_unit->nal_unit_header.get(), wbit_buffer))
         return false;
-    if(!WriteNalUnitPayload(nal_unit->nal_unit_payload.get(), wbit_buffer,
+    if(!WriteNalUnitPayload(nal_unit->nal_unit_payload.get(), sps, wbit_buffer,
                         nal_unit->nal_unit_header->nal_unit_type))
         return false;
     return true;
@@ -34,7 +34,7 @@ bool WriteNalUnitHeader(H265NalUnitHeaderParser::NalUnitHeaderState* nal_unit_he
     return true;
 }
 
-bool WriteNalUnitPayload(H265NalUnitPayloadParser::NalUnitPayloadState* state,
+bool WriteNalUnitPayload(H265NalUnitPayloadParser::NalUnitPayloadState* state, H265SpsParser::SpsState* sps, 
                          BitBufferWriter* bit_buffer, uint32_t nal_unit_type) noexcept {
     // H265 NAL Unit Payload (nal_unit()) parser.
     // Section 7.3.1.1 ("General NAL unit header syntax") of the H.265
@@ -56,7 +56,7 @@ bool WriteNalUnitPayload(H265NalUnitPayloadParser::NalUnitPayloadState* state,
             //C nal_unit_payload->slice_segment_layer =
             //C    H265SliceSegmentLayerParser::ParseSliceSegmentLayer(
             //C        bit_buffer, nal_unit_type, bitstream_parser_state);
-            WriteSliceSegmentLayer(state->slice_segment_layer.get(), bit_buffer);
+            WriteSliceSegmentLayer(state->slice_segment_layer.get(), sps, bit_buffer);
             break;
         }
         case RSV_VCL_N10:
@@ -77,7 +77,7 @@ bool WriteNalUnitPayload(H265NalUnitPayloadParser::NalUnitPayloadState* state,
             //C nal_unit_payload->slice_segment_layer =
             //C     H265SliceSegmentLayerParser::ParseSliceSegmentLayer(
             //C       bit_buffer, nal_unit_type, bitstream_parser_state);
-            WriteSliceSegmentLayer(state->slice_segment_layer.get(), bit_buffer);
+            WriteSliceSegmentLayer(state->slice_segment_layer.get(), sps, bit_buffer);
             break;
         }
         case RSV_IRAP_VCL22:

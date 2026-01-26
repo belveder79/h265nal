@@ -6,6 +6,6 @@
 #include "h265_wutils.h"
 
 bool WriteSliceSegmentLayer(H265SliceSegmentLayerParser::SliceSegmentLayerState* slice_segment_layer,
-                            BitBufferWriter* bit_buffer) noexcept;
+                            H265SpsParser::SpsState* sps, BitBufferWriter* bit_buffer) noexcept;
 
 #endif // H265_SLICE_WRITER_INCLUDED

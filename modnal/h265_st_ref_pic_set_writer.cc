@@ -1,12 +1,12 @@
 #include "h265_st_ref_pic_set_writer.h"
 
-/*
 bool WriteStRefPicSet(H265StRefPicSetParser::StRefPicSetState* st_ref_pic_set,
-    BitBufferWriter* bit_buffer, uint32_t stRpsIdx,
-    uint32_t num_short_term_ref_pic_sets,
-    const std::vector<std::unique_ptr<struct StRefPicSetState>>*
-        st_ref_pic_set_state_vector,
-    uint32_t max_num_pics) noexcept {
+    BitBufferWriter* bit_buffer) noexcept {
+    
+#pragma unused(st_ref_pic_set)
+#pragma unused(bit_buffer)
+    std::cout << "UNIMPLEMENTED!" << std::endl;
+/*
 
   uint32_t bits_tmp;
   uint32_t golomb_tmp;
@@ -184,7 +184,7 @@ bool WriteStRefPicSet(H265StRefPicSetParser::StRefPicSetState* st_ref_pic_set,
   }
 
   return st_ref_pic_set;
- 
+*/
     return true;
 }
-*/
+
