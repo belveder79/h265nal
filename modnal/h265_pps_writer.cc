@@ -1,4 +1,7 @@
 #include "h265_pps_writer.h"
+#include "h265_scaling_list_data_writer.h"
+#include "h265_pps_scc_extension_writer.h"
+#include "h265_pps_multilayer_extension_writer.h"
 
 bool WritePps(H265PpsParser::PpsState* pps, BitBufferWriter* bit_buffer) noexcept {
     
@@ -196,18 +199,13 @@ bool WritePps(H265PpsParser::PpsState* pps, BitBufferWriter* bit_buffer) noexcep
   if (!bit_buffer->WriteBits(pps->pps_scaling_list_data_present_flag, 1)) {
     return false;
   }
-#ifdef CHECK
-  if (pps->pps_scaling_list_data_present_flag) {
-    // scaling_list_data()
-    pps->scaling_list_data =
-        H265ScalingListDataParser::ParseScalingListData(bit_buffer);
-    if (pps->scaling_list_data == nullptr) {
-      return false;
+
+    if (pps->pps_scaling_list_data_present_flag) {
+        if(!WriteScalingListData(pps->scaling_list_data.get(), bit_buffer))
+        {
+            return false;
+        }
     }
-  }
-#else
-    std::cout << "UNIMPLEMENTED" << std::endl;
-#endif
 
   // lists_modification_present_flag  u(1)
   if (!bit_buffer->WriteBits(pps->lists_modification_present_flag, 1)) {
@@ -273,7 +271,20 @@ bool WritePps(H265PpsParser::PpsState* pps, BitBufferWriter* bit_buffer) noexcep
     }
   }
 #else
-    std::cout << "UNIMPLEMENTED" << std::endl;
+    if (pps->pps_multilayer_extension_flag) {
+      // pps_multilayer_extension() // specified in Annex F
+          if(!WritePpsMultilayerExtension(pps->pps_multilayer_extension.get(),
+                                          bit_buffer)) {
+              return false;
+          }
+    }
+
+    if (pps->pps_scc_extension_flag) {
+      // pps_range_extension()
+          if(!WritePpsSccExtension(pps->pps_scc_extension.get(), bit_buffer)) {
+        return false;
+      }
+    }
 #endif
 
   if (pps->pps_extension_4bits) {
