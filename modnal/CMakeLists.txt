@@ -19,6 +19,7 @@ set (modnal_SOURCES
   h265_pps_scc_extension_writer.cc
   h265_sps_range_extension_writer.cc
   h265_sps_scc_extension_writer.cc
+  h265_pred_weight_table_writer.cc
   h265_sps_3d_extension_writer.cc
 )
 
@@ -33,6 +34,7 @@ target_sources(modnal
         "h265_sps_writer.h"
         "h265_pps_writer.h"
         "h265_sei_writer.h"
+        "h265_pred_weight_table_writer.h"
         "h265_slice_writer.h"
         "h265_profile_tier_level_writer.h"
         "h265_nal_unit_writer.h"

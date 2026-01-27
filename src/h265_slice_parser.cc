@@ -55,7 +55,15 @@ H265SliceSegmentLayerParser::ParseSliceSegmentLayer(
 
   // slice_segment_data()
   // rbsp_slice_segment_trailing_bits()
-
+  while (more_rbsp_data(bit_buffer))
+  {
+      uint8_t data = 0xff;
+      if (!bit_buffer->ReadUInt8(data)) {
+        return nullptr;
+      }
+      slice_segment_layer->payload.push_back(data);
+  }
+        
   return slice_segment_layer;
 }
 

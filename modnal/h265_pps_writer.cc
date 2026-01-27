@@ -97,32 +97,31 @@ bool WritePps(H265PpsParser::PpsState* pps, BitBufferWriter* bit_buffer) noexcep
   }
 
   // pps_slice_chroma_qp_offsets_present_flag  u(1)
-  if (!bit_buffer->WriteBits(1, pps->pps_slice_chroma_qp_offsets_present_flag)) {
+  if (!bit_buffer->WriteBits(pps->pps_slice_chroma_qp_offsets_present_flag, 1)) {
     return false;
   }
 
   // weighted_pred_flag  u(1)
-  if (!bit_buffer->WriteBits(1, pps->weighted_pred_flag)) {
+  if (!bit_buffer->WriteBits(pps->weighted_pred_flag, 1)) {
     return false;
   }
 
   // weighted_bipred_flag  u(1)
-  if (!bit_buffer->WriteBits(1, pps->weighted_bipred_flag)) {
+  if (!bit_buffer->WriteBits(pps->weighted_bipred_flag, 1)) {
     return false;
   }
 
   // transquant_bypass_enabled_flag  u(1)
-  if (!bit_buffer->WriteBits(1, pps->transquant_bypass_enabled_flag)) {
+  if (!bit_buffer->WriteBits(pps->transquant_bypass_enabled_flag, 1)) {
     return false;
   }
-
   // tiles_enabled_flag  u(1)
-  if (!bit_buffer->WriteBits(1, pps->tiles_enabled_flag)) {
+  if (!bit_buffer->WriteBits(pps->tiles_enabled_flag, 1)) {
     return false;
   }
 
   // entropy_coding_sync_enabled_flag  u(1)
-  if (!bit_buffer->WriteBits(1, pps->entropy_coding_sync_enabled_flag)) {
+  if (!bit_buffer->WriteBits(pps->entropy_coding_sync_enabled_flag, 1)) {
     return false;
   }
 
@@ -136,7 +135,7 @@ bool WritePps(H265PpsParser::PpsState* pps, BitBufferWriter* bit_buffer) noexcep
       return false;
     }
     // uniform_spacing_flag  u(1)
-    if (!bit_buffer->WriteBits(1, pps->uniform_spacing_flag)) {
+    if (!bit_buffer->WriteBits(pps->uniform_spacing_flag, 1)) {
       return false;
     }
 

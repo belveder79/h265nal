@@ -121,9 +121,9 @@ int main(int argc, char* argv[])
         h265nal::BitBufferWriter wbit_buffer(buf, nal_unit->parsed_length);
         if(WriteNalUnit(nal_unit.get(), std::prev(bitstream_parser_state.sps.end())->second.get(), &wbit_buffer))
         {
-            WriteFile("/Users/arth/Development/TILE/kvazaar/buildosx/vps.nal", buf, nal_unit->parsed_length);
+            WriteFile("/Users/arth/Development/TILE/kvazaar/buildosx/unescapednal.nal", buf, nal_unit->parsed_length);
             std::vector<uint8_t> unpacked_buffer = EscapeRbsp(buf, &wbit_buffer);
-            WriteFile("/Users/arth/Development/TILE/kvazaar/buildosx/escaped_vps.nal", unpacked_buffer.data(), unpacked_buffer.size());
+            WriteFile("/Users/arth/Development/TILE/kvazaar/buildosx/escapednal.nal", unpacked_buffer.data(), unpacked_buffer.size());
         }
         else
             std::cout << "ERROR!" << std::endl;

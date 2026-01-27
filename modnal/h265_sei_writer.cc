@@ -61,7 +61,6 @@ bool WriteSeiUserDataUnregistered(H265SeiUserDataUnregisteredParser::H265SeiUser
     uint32_t lower = payload_state->uuid_iso_iec_11578_1 & 0xFFFFFFFF;
     
     // uuid_iso_iec_11578  u(128)
-    payload_state->uuid_iso_iec_11578_1 = 0;
     if (!bit_buffer->WriteBits(upper, 32)) {
         return false;
     }
@@ -69,8 +68,8 @@ bool WriteSeiUserDataUnregistered(H265SeiUserDataUnregisteredParser::H265SeiUser
         return false;
     }
     
-    upper = (payload_state->uuid_iso_iec_11578_1 >> 32) & 0xFFFFFFFF;
-    lower = payload_state->uuid_iso_iec_11578_1 & 0xFFFFFFFF;
+    upper = (payload_state->uuid_iso_iec_11578_2 >> 32) & 0xFFFFFFFF;
+    lower = payload_state->uuid_iso_iec_11578_2 & 0xFFFFFFFF;
     
     if (!bit_buffer->WriteBits(upper, 32)) {
         return false;
@@ -79,7 +78,7 @@ bool WriteSeiUserDataUnregistered(H265SeiUserDataUnregisteredParser::H265SeiUser
         return false;
     }
 #endif
-    for (size_t i = 0; i < payload_state->payload.size(); ++i) {
+    for (size_t i = 0; i < payload_state->payload.size(); i++) {
         // user_data_payload_byte  b(8)
         if (!bit_buffer->WriteUInt8(payload_state->payload[i])) {
             return false;

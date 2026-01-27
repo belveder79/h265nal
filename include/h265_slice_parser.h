@@ -166,6 +166,8 @@ class H265SliceSegmentLayerParser {
     std::unique_ptr<
         struct H265SliceSegmentHeaderParser::SliceSegmentHeaderState>
         slice_segment_header;
+      
+    std::vector<uint8_t> payload;
     // slice_segment_data()
     // rbsp_slice_segment_trailing_bits()
   };
