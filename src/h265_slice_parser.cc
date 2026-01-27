@@ -53,16 +53,21 @@ H265SliceSegmentLayerParser::ParseSliceSegmentLayer(
     return nullptr;
   }
 
+  // THIS IS NEW (BEGIN)
   // slice_segment_data()
-  // rbsp_slice_segment_trailing_bits()
+  while(!byte_aligned(bit_buffer)) {
+    uint32_t trail = 0;
+    bit_buffer->ReadBits(1, trail);
+  }
   while (more_rbsp_data(bit_buffer))
   {
-      uint8_t data = 0xff;
-      if (!bit_buffer->ReadUInt8(data)) {
-        return nullptr;
-      }
-      slice_segment_layer->payload.push_back(data);
+    uint8_t data = 0xff;
+    if (!bit_buffer->ReadUInt8(data)) {
+      return nullptr;
+    }
+    slice_segment_layer->payload.push_back(data);
   }
+  // THIS IS NEW (END)
         
   return slice_segment_layer;
 }
