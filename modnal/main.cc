@@ -159,7 +159,7 @@ int main(int argc, char* argv[])
     
     delete options;
     
-    WriteFile("/Users/arth/Development/TILE/kvazaar/buildosx/out2x2_mod.hevc", buffer);
+    // WriteFile("/Users/arth/Development/TILE/kvazaar/buildosx/out2x2_mod.hevc", buffer);
     
     std::cout << "Byebye World" << std::endl;
     return 0;
