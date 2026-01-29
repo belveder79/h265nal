@@ -1,7 +1,7 @@
 #include "h265_vui_parameters_writer.h"
 #include "h265_hrd_parameters_writer.h"
 
-bool WriteVuiParameters(H265VuiParametersParser::VuiParametersState* vui,
+bool WriteVuiParameters(const H265VuiParametersParser::VuiParametersState* vui,
     BitBufferWriter* bit_buffer) noexcept {
     
   // H265 vui_parameters() parser.

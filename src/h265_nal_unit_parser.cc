@@ -37,10 +37,25 @@ H265NalUnitParser::ParseNalUnit(
     const uint8_t* data, size_t length,
     struct H265BitstreamParserState* bitstream_parser_state,
     ParsingOptions parsing_options) noexcept {
-  std::vector<uint8_t> unpacked_buffer = UnescapeRbsp(data, length);
+/*
+    int sizePrefix = 0;
+    if(data[-4] == 0x00 && data[-3] == 0x00 && data[-2] == 0x00)
+        sizePrefix = 3;
+    else
+        sizePrefix = 2;
+*/
+    FILE* f = fopen("/Users/arth/Development/TILE/kvazaar/buildosx/original_escaped.nal","wb");
+    fwrite(data,1,length,f); fclose(f);
+        
+        std::vector<uint8_t> unpacked_buffer = UnescapeRbsp(data, length);
   BitBuffer bit_buffer(unpacked_buffer.data(), unpacked_buffer.size());
 
-  return ParseNalUnit(&bit_buffer, bitstream_parser_state, parsing_options);
+  FILE* g = fopen("/Users/arth/Development/TILE/kvazaar/buildosx/original_unescaped.nal","wb");
+  fwrite(unpacked_buffer.data(),1,unpacked_buffer.size(),g); fclose(g);
+  
+  std::unique_ptr<H265NalUnitParser::NalUnitState> state = ParseNalUnit(&bit_buffer, bitstream_parser_state, parsing_options);
+//  state->sizePrefix = sizePrefix;
+  return state;
 }
 
 std::unique_ptr<H265NalUnitParser::NalUnitState>
@@ -80,6 +95,10 @@ H265NalUnitParser::ParseNalUnit(
   // update the parsed length
   nal_unit->parsed_length = get_current_offset(bit_buffer);
 
+  // NEW
+  if(rbsp_trailing_bits(bit_buffer))
+      nal_unit->trailing0x80Byte = true;
+        
   return nal_unit;
 }
 

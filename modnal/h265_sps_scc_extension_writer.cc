@@ -1,6 +1,6 @@
 #include "h265_sps_scc_extension_writer.h"
 
-bool WriteSpsSccExtension(H265SpsSccExtensionParser::SpsSccExtensionState* sps_scc_extension, uint32_t chroma_format_idc,
+bool WriteSpsSccExtension(const H265SpsSccExtensionParser::SpsSccExtensionState* sps_scc_extension, uint32_t chroma_format_idc,
                           uint32_t bit_depth_luma_minus8, uint32_t bit_depth_chroma_minus8, BitBufferWriter* bit_buffer) noexcept
 {
 

@@ -1,6 +1,6 @@
 #include "h265_sps_multilayer_extension_writer.h"
 
-bool WriteSpsMultilayerExtension(H265SpsMultilayerExtensionParser::SpsMultilayerExtensionState* sps_multilayer_extension,
+bool WriteSpsMultilayerExtension(const H265SpsMultilayerExtensionParser::SpsMultilayerExtensionState* sps_multilayer_extension,
     BitBufferWriter* bit_buffer) noexcept {
   // H265 sps_multilayer_extension() NAL Unit.
   // Section F.7.3.2.2.4 ("Sequence parameter set multilayer extension syntax")

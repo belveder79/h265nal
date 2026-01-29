@@ -1,7 +1,7 @@
 #include "h265_pps_scc_extension_writer.h"
 
 
-bool WritePpsSccExtension(H265PpsSccExtensionParser::PpsSccExtensionState* pps_scc_extension,
+bool WritePpsSccExtension(const H265PpsSccExtensionParser::PpsSccExtensionState* pps_scc_extension,
     BitBufferWriter* bit_buffer) noexcept {
 
   // H265 pps_scc_extension() NAL Unit.

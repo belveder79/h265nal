@@ -1,6 +1,6 @@
 #include "h265_pred_weight_table_writer.h"
 
-bool WritePredWeightTable(H265PredWeightTableParser::PredWeightTableState* pred_weight_table,
+bool WritePredWeightTable(const H265PredWeightTableParser::PredWeightTableState* pred_weight_table,
     BitBufferWriter* bit_buffer) noexcept {
 
   // H265 pred_weight_table() NAL Unit.

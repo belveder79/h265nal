@@ -192,7 +192,7 @@ bool WriteProfileInfo(H265ProfileInfoParser::ProfileInfoState* profile_info, Bit
     return true;
 }
 
-bool WriteProfileTierLevel(H265ProfileTierLevelParser::ProfileTierLevelState* profile_tier_level, BitBufferWriter* bit_buffer) noexcept
+bool WriteProfileTierLevel(const H265ProfileTierLevelParser::ProfileTierLevelState* profile_tier_level, BitBufferWriter* bit_buffer) noexcept
 {
     // profile_tier_level() parser.
     // Section 7.3.3 ("Profile, tier and level syntax") of the H.265

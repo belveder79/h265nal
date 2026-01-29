@@ -1,6 +1,6 @@
 #include "h265_scaling_list_data_writer.h"
 
-bool WriteScalingListData(H265ScalingListDataParser::ScalingListDataState* scaling_list_data,
+bool WriteScalingListData(const H265ScalingListDataParser::ScalingListDataState* scaling_list_data,
     BitBufferWriter* bit_buffer) noexcept {
   // H265 scaling_list_data() NAL Unit.
   // Section 7.3.4 ("Scaling list data syntax") of the H.265

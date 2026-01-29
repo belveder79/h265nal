@@ -5,7 +5,7 @@
 #include <h265_common.h>
 #include "h265_wutils.h"
 
-bool WritePredWeightTable(H265PredWeightTableParser::PredWeightTableState* pred_weight_table,
+bool WritePredWeightTable(const H265PredWeightTableParser::PredWeightTableState* pred_weight_table,
     BitBufferWriter* bit_buffer) noexcept;
 
 #endif // H265_PRED_WEIGHT_TABLE_WRITER_INCLUDED

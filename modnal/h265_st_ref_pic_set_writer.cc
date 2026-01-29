@@ -1,6 +1,6 @@
 #include "h265_st_ref_pic_set_writer.h"
 
-bool WriteStRefPicSet(H265StRefPicSetParser::StRefPicSetState* st_ref_pic_set,
+bool WriteStRefPicSet(const H265StRefPicSetParser::StRefPicSetState* st_ref_pic_set,
     BitBufferWriter* bit_buffer) noexcept {
     
   // H265 st_ref_pic_set() NAL Unit.

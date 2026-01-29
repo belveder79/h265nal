@@ -81,6 +81,19 @@ else()
 )
 endif()
 
+// NEW
+file(GLOB h265nal_HEADERS
+     "${CMAKE_CURRENT_SOURCE_DIR}/../include/*.h"
+)
+target_sources(h265nal
+  PUBLIC
+  FILE_SET HEADERS
+  BASE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/../include"
+  FILES ${h265nal_HEADERS}
+)
+get_target_property(HeaderList h265nal HEADER_SET)
+// NEW END
+
 target_include_directories(h265nal PUBLIC ../include)
 if (WIN32)
   target_link_libraries(h265nal PUBLIC wsock32 ws2_32)

@@ -221,7 +221,7 @@ bool WriteSeiUnknownPayload(H265SeiUnknownParser::H265SeiUnknownState* payload_s
 }
 
 
-bool WriteSei(H265SeiMessageParser::SeiMessageState* sei_message_state, BitBufferWriter* bit_buffer) noexcept {
+bool WriteSei(const H265SeiMessageParser::SeiMessageState* sei_message_state, BitBufferWriter* bit_buffer) noexcept {
     // H265 SEI NAL Unit (access_unit_delimiter_rbsp()) parser.
     // Section 7.3.5 ("Supplemental enhancement information message syntax") of
     // the H.265 standard for a complete description.
@@ -278,6 +278,11 @@ bool WriteSei(H265SeiMessageParser::SeiMessageState* sei_message_state, BitBuffe
                                         (H265SeiUnknownParser::H265SeiUnknownState*)sei_message_state->payload_state.get(), bit_buffer);
             break;
     }
+    
+    // CLEMENS: TODO VERIFY WHY THIS IS REQUIRED
+    //if(!bit_buffer->WriteUInt8(0x80))
+    //    return false;
+    
     return ok;
 }
 

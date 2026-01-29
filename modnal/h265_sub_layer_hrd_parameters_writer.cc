@@ -1,6 +1,6 @@
 #include "h265_sub_layer_hrd_parameters_writer.h"
 
-bool WriteSubLayerHrdParameters( H265SubLayerHrdParametersParser::SubLayerHrdParametersState* sub_layer_hrd_parameters,
+bool WriteSubLayerHrdParameters(const  H265SubLayerHrdParametersParser::SubLayerHrdParametersState* sub_layer_hrd_parameters,
                                 BitBufferWriter* bit_buffer, uint32_t CpbCnt,
                                 uint32_t sub_pic_hrd_params_present_flag) noexcept {
     

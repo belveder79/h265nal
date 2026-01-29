@@ -5,6 +5,6 @@
 #include <h265_common.h>
 #include "h265_wutils.h"
 
-bool WritePps(H265PpsParser::PpsState* pps, BitBufferWriter* bit_buffer) noexcept;
+bool WritePps(const H265PpsParser::PpsState* pps, BitBufferWriter* bit_buffer) noexcept;
 
 #endif // H265_PPS_WRITER_INCLUDED

@@ -42,6 +42,9 @@ class H265NalUnitParser {
     size_t parsed_length;
     // NAL Unit checksum
     std::shared_ptr<NaluChecksum> checksum;
+    // NEW
+    bool trailing0x80Byte;
+    // int sizePrefix;
 
     std::unique_ptr<struct H265NalUnitHeaderParser::NalUnitHeaderState>
         nal_unit_header;

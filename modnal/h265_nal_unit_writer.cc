@@ -1,16 +1,21 @@
 #include "h265_nal_unit_writer.h"
 
-bool WriteNalUnit(H265NalUnitParser::NalUnitState* nal_unit, H265SpsParser::SpsState* sps, BitBufferWriter* wbit_buffer) noexcept
+bool WriteNalUnit(const H265NalUnitParser::NalUnitState* nal_unit, H265SpsParser::SpsState* sps, BitBufferWriter* wbit_buffer) noexcept
 {
     if(!WriteNalUnitHeader(nal_unit->nal_unit_header.get(), wbit_buffer))
         return false;
     if(!WriteNalUnitPayload(nal_unit->nal_unit_payload.get(), sps, wbit_buffer,
                         nal_unit->nal_unit_header->nal_unit_type))
         return false;
+    
+    if(nal_unit->trailing0x80Byte)
+        if(!wbit_buffer->WriteUInt8(0x80))
+            return false;
+    
     return true;
 }
 
-bool WriteNalUnitHeader(H265NalUnitHeaderParser::NalUnitHeaderState* nal_unit_header, BitBufferWriter* bit_buffer) noexcept
+bool WriteNalUnitHeader(const H265NalUnitHeaderParser::NalUnitHeaderState* nal_unit_header, BitBufferWriter* bit_buffer) noexcept
 {
     // forbidden_zero_bit  f(1)
     if (!bit_buffer->WriteBits(nal_unit_header->forbidden_zero_bit, 1)) {
@@ -34,7 +39,7 @@ bool WriteNalUnitHeader(H265NalUnitHeaderParser::NalUnitHeaderState* nal_unit_he
     return true;
 }
 
-bool WriteNalUnitPayload(H265NalUnitPayloadParser::NalUnitPayloadState* state, H265SpsParser::SpsState* sps, 
+bool WriteNalUnitPayload(const H265NalUnitPayloadParser::NalUnitPayloadState* state, H265SpsParser::SpsState* sps,
                          BitBufferWriter* bit_buffer, uint32_t nal_unit_type) noexcept {
     // H265 NAL Unit Payload (nal_unit()) parser.
     // Section 7.3.1.1 ("General NAL unit header syntax") of the H.265

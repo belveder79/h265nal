@@ -1,6 +1,6 @@
 #include "h265_pps_multilayer_extension_writer.h"
 
-bool WritePpsMultilayerExtension(H265PpsMultilayerExtensionParser::PpsMultilayerExtensionState* pps_multilayer_extension,
+bool WritePpsMultilayerExtension(const H265PpsMultilayerExtensionParser::PpsMultilayerExtensionState* pps_multilayer_extension,
     BitBufferWriter* bit_buffer) noexcept {
 
   // H265 pps_multilayer_extension() NAL Unit.

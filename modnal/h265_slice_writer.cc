@@ -2,7 +2,7 @@
 #include "h265_pred_weight_table_writer.h"
 #include "h265_st_ref_pic_set_writer.h"
 
-bool WriteSliceSegmentHeader(H265SliceSegmentHeaderParser::SliceSegmentHeaderState* slice_segment_header,
+bool WriteSliceSegmentHeader(const H265SliceSegmentHeaderParser::SliceSegmentHeaderState* slice_segment_header,
                              H265SpsParser::SpsState* sps, BitBufferWriter* bit_buffer) noexcept
 {
     // H265 slice segment header (slice_segment_layer_rbsp()) NAL Unit.
@@ -450,7 +450,7 @@ bool WriteSliceSegmentHeader(H265SliceSegmentHeaderParser::SliceSegmentHeaderSta
     return true;
 }
 
-bool WriteSliceSegmentLayer(H265SliceSegmentLayerParser::SliceSegmentLayerState* slice_segment_layer,
+bool WriteSliceSegmentLayer(const H265SliceSegmentLayerParser::SliceSegmentLayerState* slice_segment_layer,
                             H265SpsParser::SpsState* sps, BitBufferWriter* bit_buffer) noexcept {
     // H265 slice segment layer (slice_segment_layer_rbsp()) NAL Unit.
     // Section 7.3.2.9 ("Slice segment layer RBSP syntax") of the H.265
@@ -459,9 +459,11 @@ bool WriteSliceSegmentLayer(H265SliceSegmentLayerParser::SliceSegmentLayerState*
     
     if(!WriteSliceSegmentHeader(slice_segment_layer->slice_segment_header.get(), sps, bit_buffer))
         return false;
-    
+  
     // slice_segment_data()
     // rbsp_slice_segment_trailing_bits()
+    wbsp_trailing_bits2(bit_buffer);
+    
     for (size_t i = 0; i < slice_segment_layer->payload.size(); i++) {
         // user_data_payload_byte  b(8)
         if (!bit_buffer->WriteUInt8(slice_segment_layer->payload[i])) {
@@ -469,5 +471,15 @@ bool WriteSliceSegmentLayer(H265SliceSegmentLayerParser::SliceSegmentLayerState*
         }
     }
     
+    // CLEMENS: TODO VERIFY WHY THIS IS REQUIRED
+    /*
+    if(slice_segment_layer->nal_unit_type == h265nal::NalUnitType::TRAIL_R ||
+       slice_segment_layer->nal_unit_type == h265nal::NalUnitType::RASL_R)
+    {
+        // CLEMENS: TODO VERIFY WHY THIS IS REQUIRED
+        if(!bit_buffer->WriteUInt8(0x80))
+            return false;
+    }
+    */
     return true;
 }

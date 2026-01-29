@@ -5,7 +5,7 @@
 #include <h265_common.h>
 #include "h265_wutils.h"
 
-bool WriteHrdParameters(H265HrdParametersParser::HrdParametersState* hrd_parameters,
+bool WriteHrdParameters(const H265HrdParametersParser::HrdParametersState* hrd_parameters,
                         BitBufferWriter* bit_buffer,
                         uint32_t commonInfPresentFlag, uint32_t maxNumSubLayersMinus1) noexcept;
 

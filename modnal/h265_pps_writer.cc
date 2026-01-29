@@ -3,7 +3,7 @@
 #include "h265_pps_scc_extension_writer.h"
 #include "h265_pps_multilayer_extension_writer.h"
 
-bool WritePps(H265PpsParser::PpsState* pps, BitBufferWriter* bit_buffer) noexcept {
+bool WritePps(const H265PpsParser::PpsState* pps, BitBufferWriter* bit_buffer) noexcept {
     
   //uint32_t golomb_tmp;
 
@@ -295,7 +295,7 @@ bool WritePps(H265PpsParser::PpsState* pps, BitBufferWriter* bit_buffer) noexcep
     }
   }
 
-  wbsp_trailing_bits(bit_buffer);
+  wbsp_trailing_bits2(bit_buffer);
 
   return true;
 }

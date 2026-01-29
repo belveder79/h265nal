@@ -3,7 +3,7 @@
 #include "h265_hrd_parameters_writer.h"
 #include "h265_sub_layer_hrd_parameters_writer.h"
 
-bool WriteVps(H265VpsParser::VpsState* vps, BitBufferWriter* bit_buffer) noexcept
+bool WriteVps(const H265VpsParser::VpsState* vps, BitBufferWriter* bit_buffer) noexcept
 {
     // H265 VPS (video_parameter_set_rbsp()) NAL Unit.
     // Section 7.3.2.1 ("Video parameter set data syntax") of the H.265
@@ -160,6 +160,6 @@ bool WriteVps(H265VpsParser::VpsState* vps, BitBufferWriter* bit_buffer) noexcep
             }
         }
     }
-    wbsp_trailing_bits(bit_buffer);
+    wbsp_trailing_bits2(bit_buffer);
     return true;
 }

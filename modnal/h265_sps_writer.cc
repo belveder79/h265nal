@@ -9,7 +9,7 @@
 #include "h265_sps_3d_extension_writer.h"
 #include "h265_sps_scc_extension_writer.h"
 
-bool WriteSps(H265SpsParser::SpsState* sps, BitBufferWriter* bit_buffer) noexcept
+bool WriteSps(const H265SpsParser::SpsState* sps, BitBufferWriter* bit_buffer) noexcept
 {
   // sps_video_parameter_set_id  u(4)
   if (!bit_buffer->WriteBits(sps->sps_video_parameter_set_id, 4)) {
@@ -364,7 +364,7 @@ bool WriteSps(H265SpsParser::SpsState* sps, BitBufferWriter* bit_buffer) noexcep
     }
   }
 
-  wbsp_trailing_bits(bit_buffer);
+  wbsp_trailing_bits2(bit_buffer);
 
   return true;
 }

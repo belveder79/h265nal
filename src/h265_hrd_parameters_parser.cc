@@ -192,6 +192,7 @@ H265HrdParametersParser::ParseHrdParameters(
           std::move(sub_layer_hrd_parameters));
     }
 
+    // CLEMENS: POTENTIAL BUG HERE?
     if (hrd_parameters->vcl_hrd_parameters_present_flag) {
       // sub_layer_hrd_parameters(i)
       auto CpbCnt = hrd_parameters->cpb_cnt_minus1[i] + 1;

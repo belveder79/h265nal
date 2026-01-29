@@ -5,7 +5,7 @@
 #include <h265_common.h>
 #include "h265_wutils.h"
 
-bool WriteVuiParameters(H265VuiParametersParser::VuiParametersState* vui,
+bool WriteVuiParameters(const H265VuiParametersParser::VuiParametersState* vui,
                         BitBufferWriter* bit_buffer) noexcept;
 
 #endif // H265_VUI_MULTILAYER_EXTENSION_WRITER_INCLUDED

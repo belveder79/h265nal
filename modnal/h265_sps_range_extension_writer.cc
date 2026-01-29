@@ -1,6 +1,6 @@
 #include "h265_sps_range_extension_writer.h"
 
-bool WriteSpsRangeExtension(H265SpsRangeExtensionParser::SpsRangeExtensionState* sps_range_extension,
+bool WriteSpsRangeExtension(const H265SpsRangeExtensionParser::SpsRangeExtensionState* sps_range_extension,
     BitBufferWriter* bit_buffer) noexcept {
   // H265 sps_range_extension() NAL Unit.
   // Section 7.3.2.2.2 ("Sequence parameter set range extension syntax") of

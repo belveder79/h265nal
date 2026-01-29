@@ -1,6 +1,6 @@
 #include "h265_sps_3d_extension_writer.h"
 
-bool WriteSps3dExtension(H265Sps3dExtensionParser::Sps3dExtensionState* sps_3d_extension, BitBufferWriter* bit_buffer) noexcept {
+bool WriteSps3dExtension(const H265Sps3dExtensionParser::Sps3dExtensionState* sps_3d_extension, BitBufferWriter* bit_buffer) noexcept {
 
   // H265 sps_3d_extension() NAL Unit.
   // Section I.7.3.2.2.5 ("Sequence parameter set 3d extension syntax")

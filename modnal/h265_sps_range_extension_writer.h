@@ -6,7 +6,7 @@
 #include "h265_wutils.h"
 
 
-bool WriteSpsRangeExtension(H265SpsRangeExtensionParser::SpsRangeExtensionState* sps_range_extension,
+bool WriteSpsRangeExtension(const H265SpsRangeExtensionParser::SpsRangeExtensionState* sps_range_extension,
                             BitBufferWriter* bit_buffer) noexcept;
 
 #endif // H265_SPS_RANGE_EXTENSION_WRITER_INCLUDED
