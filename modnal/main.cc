@@ -50,22 +50,6 @@ arg_options DEFAULT_OPTIONS{
 
 
 
-
-
-
-/*
- bool WriteSps(h265nal::H265SpsParser::SpsState* sps, h265nal::BitBufferWriter* bit_buffer) noexcept
- {
-     
-     return true;
- }
-
- bool WritePps(h265nal::H265PpsParser::PpsState* pps,h265nal::BitBufferWriter* bit_buffer) noexcept
- {
- return true;
- }
- */
-
 int main(int argc, char* argv[])
 {
     if(argc > 1) {
@@ -90,7 +74,9 @@ int main(int argc, char* argv[])
     std::unique_ptr<h265nal::H265BitstreamParser::BitstreamState> bitstream;
     
     // 3.1. read infile into buffer
+    //if (h265nal::H265Utils::ReadFile("/Users/arth/Downloads/tile_0_0_high.hevc", buffer) < 0) {
     if (h265nal::H265Utils::ReadFile("/Users/arth/Development/TILE/kvazaar/buildosx/out2x2.hevc", buffer) < 0) {
+    //if (h265nal::H265Utils::ReadFile("/Users/arth/Downloads/Video1-1992k.hvc", buffer) < 0) {
         return -1;
     }
     auto nalu_indices = h265nal::H265BitstreamParser::FindNaluIndices(buffer.data(), buffer.size());
@@ -109,7 +95,9 @@ int main(int argc, char* argv[])
             
         uint8_t* buf = new uint8_t[nal_unit->parsed_length+(nal_unit->trailing0x80Byte?1:0)]; memset(buf, 0x00, nal_unit->parsed_length+(nal_unit->trailing0x80Byte?1:0));
         h265nal::BitBufferWriter wbit_buffer(buf, nal_unit->parsed_length+(nal_unit->trailing0x80Byte?1:0)); // add extra byte for whatever
-        if(WriteNalUnit(nal_unit.get(), std::prev(bitstream_parser_state.sps.end())->second.get(), &wbit_buffer))
+        
+        h265nal::H265SpsParser::SpsState* sps = bitstream_parser_state.sps.empty() ? nullptr : std::prev(bitstream_parser_state.sps.end())->second.get();
+        if(WriteNalUnit(nal_unit.get(), sps, &wbit_buffer))
         {
             size_t bytesoff, bitoff;
             wbit_buffer.GetCurrentOffset(&bytesoff, &bitoff); // bytesoff is size
@@ -183,7 +171,7 @@ int main(int argc, char* argv[])
         delete[] buf;
     }
     
-    std::vector<uint8_t> finalbuffer;
+    std::vector<uint8_t> finalbuffer; //bool first = true;
     for (const auto &nalu_index : nalu_indices) {
         // 4.1. parse 1 NAL unit
         // note: If the NALU comes from an unescaped bitstreams, i.e.,
@@ -191,7 +179,45 @@ int main(int argc, char* argv[])
         // boxes), the right function is `ParseNalUnitUnescaped()`.
         auto nal_unit = h265nal::H265NalUnitParser::ParseNalUnit(&(buffer.data())[nalu_index.payload_start_offset], nalu_index.payload_size,
                                                                  &bitstream_parser_state, parsing_options);
-    
+        /*
+        if(first)
+        {
+            first = false;
+            continue;
+        }
+        */
+        if(nal_unit->nal_unit_payload->sps != nullptr)
+        {
+            uint32_t max_CU_width = (1 << ((nal_unit->nal_unit_payload->sps->log2_min_luma_coding_block_size_minus3+3) + nal_unit->nal_unit_payload->sps->log2_diff_max_min_luma_coding_block_size));
+            uint32_t max_CU_height = (1 << ((nal_unit->nal_unit_payload->sps->log2_min_luma_coding_block_size_minus3+3) + nal_unit->nal_unit_payload->sps->log2_diff_max_min_luma_coding_block_size));
+            std::cout << max_CU_width << " " << max_CU_height << std::endl;
+            /*
+            // double resolution in X
+            nal_unit->nal_unit_payload->sps->pic_width_in_luma_samples*=2;
+            nal_unit->nal_unit_payload->sps->vui_parameters->aspect_ratio_info_present_flag = 0;
+            nal_unit->nal_unit_payload->sps->vui_parameters->vui_num_units_in_tick = 1000;
+            nal_unit->nal_unit_payload->sps->vui_parameters->vui_time_scale =  60000;
+             */
+        }
+        /*
+        if(nal_unit->nal_unit_payload->pps != nullptr)
+        {
+            // set 2x1 layout
+            nal_unit->nal_unit_payload->pps->tiles_enabled_flag = 1;
+            nal_unit->nal_unit_payload->pps->uniform_spacing_flag = 1;
+            nal_unit->nal_unit_payload->pps->num_tile_columns_minus1 = 1;
+            nal_unit->nal_unit_payload->pps->num_tile_rows_minus1 = 0;
+            //nal_unit->nal_unit_payload->pps->loop_filter_across_tiles_enabled_flag = 0;
+            //nal_unit->nal_unit_payload->pps->cu_qp_delta_enabled_flag = 0;
+        }
+        
+        if(nal_unit->nal_unit_payload->slice_segment_layer != nullptr)
+        {
+            nal_unit->nal_unit_payload->slice_segment_layer->slice_segment_header->slice_segment_address = 0;
+        }
+        */
+        
+        /*
         // TEST FLIP SLICES
         // 0, 10, 120, 130
         if(nal_unit->nal_unit_payload->slice_segment_layer != nullptr)
@@ -201,15 +227,15 @@ int main(int argc, char* argv[])
             }
             else if(nal_unit->nal_unit_payload->slice_segment_layer->slice_segment_header->slice_segment_address == 130) {
                 nal_unit->nal_unit_payload->slice_segment_layer->slice_segment_header->slice_segment_address = 120;
-            }/*
+            }
             else if(nal_unit->nal_unit_payload->slice_segment_layer->slice_segment_header->slice_segment_address == 10) {
                 nal_unit->nal_unit_payload->slice_segment_layer->slice_segment_header->slice_segment_address = 130;
             }
             else if(nal_unit->nal_unit_payload->slice_segment_layer->slice_segment_header->slice_segment_address == 130) {
                 nal_unit->nal_unit_payload->slice_segment_layer->slice_segment_header->slice_segment_address = 10;
-            }*/
+            }
         }
-        
+        */
         // uint32_t type = nal_unit.get()->nal_unit_header->nal_unit_type;
         uint8_t* buf = new uint8_t[nal_unit->parsed_length+(nal_unit->trailing0x80Byte?1:0)]; memset(buf, 0x00, nal_unit->parsed_length+(nal_unit->trailing0x80Byte?1:0));
         h265nal::BitBufferWriter wbit_buffer(buf, nal_unit->parsed_length+(nal_unit->trailing0x80Byte?1:0));

@@ -61,7 +61,10 @@ bool WriteNalUnitPayload(const H265NalUnitPayloadParser::NalUnitPayloadState* st
             //C nal_unit_payload->slice_segment_layer =
             //C    H265SliceSegmentLayerParser::ParseSliceSegmentLayer(
             //C        bit_buffer, nal_unit_type, bitstream_parser_state);
-            WriteSliceSegmentLayer(state->slice_segment_layer.get(), sps, bit_buffer);
+            if( sps != nullptr)
+                WriteSliceSegmentLayer(state->slice_segment_layer.get(), sps, bit_buffer);
+            else
+                return false;
             break;
         }
         case RSV_VCL_N10:
@@ -82,7 +85,10 @@ bool WriteNalUnitPayload(const H265NalUnitPayloadParser::NalUnitPayloadState* st
             //C nal_unit_payload->slice_segment_layer =
             //C     H265SliceSegmentLayerParser::ParseSliceSegmentLayer(
             //C       bit_buffer, nal_unit_type, bitstream_parser_state);
-            WriteSliceSegmentLayer(state->slice_segment_layer.get(), sps, bit_buffer);
+            if( sps != nullptr)
+                WriteSliceSegmentLayer(state->slice_segment_layer.get(), sps, bit_buffer);
+            else
+                return false;
             break;
         }
         case RSV_IRAP_VCL22:
